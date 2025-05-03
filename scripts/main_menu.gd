@@ -2,6 +2,9 @@ extends Control
 
 @onready var Grim: Control = $".."
 
+func _ready() -> void:
+	$AppLabel.set_text("Grim v"+ProjectSettings.get_setting("application/config/version"))
+
 func _on_open_file_button_pressed() -> void:
 	$OpenFileDialog.popup()
 	

@@ -31,3 +31,10 @@ func load_tree(dir: String):
 	for file in files:
 		var child = editor_space.file_tree.create_item(root)
 		child.set_text(0, file)
+		
+func add_file_to_tab(path: String):
+	var file = path.split("/")[-1]
+	for i in editor_space.files_tab.item_count:
+		if file == editor_space.files_tab.get_item_text(i):
+			return
+	editor_space.files_tab.add_item(file)

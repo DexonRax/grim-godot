@@ -1,8 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://b0qd8vsdufu8"]
+[gd_scene load_steps=5 format=3 uid="uid://b0qd8vsdufu8"]
 
 [ext_resource type="Script" uid="uid://g6yuoe22e35r" path="res://scripts/grim.gd" id="1_5qr7r"]
 [ext_resource type="Script" uid="uid://5508guyn4no6" path="res://scripts/main_menu.gd" id="2_ukegr"]
 [ext_resource type="Script" uid="uid://dc1j1bvtqx0h5" path="res://scripts/editor_space.gd" id="3_7ucks"]
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_5qr7r"]
+number_color = Color(0, 0, 0.890196, 1)
+symbol_color = Color(0.909804, 0.713726, 0, 1)
+function_color = Color(0.977465, 0.278909, 0.788214, 1)
+member_variable_color = Color(0, 0.819608, 0, 1)
 
 [node name="Grim" type="Control"]
 layout_mode = 3
@@ -34,10 +40,10 @@ color = Color(0.154876, 0.154876, 0.154876, 1)
 
 [node name="OpenFileButton" type="Button" parent="MainMenu"]
 layout_mode = 0
-offset_left = 81.0
-offset_top = 73.0
-offset_right = 172.0
-offset_bottom = 130.0
+offset_left = 84.0
+offset_top = 176.0
+offset_right = 175.0
+offset_bottom = 233.0
 text = "open"
 
 [node name="OpenFileDialog" type="FileDialog" parent="MainMenu"]
@@ -46,6 +52,15 @@ title = "Open a File or Directory"
 ok_button_text = "Open"
 file_mode = 3
 access = 2
+
+[node name="AppLabel" type="Label" parent="MainMenu"]
+layout_mode = 0
+offset_left = 76.0
+offset_top = 97.0
+offset_right = 321.0
+offset_bottom = 153.0
+theme_override_font_sizes/font_size = 40
+text = "Grim v0.0.0.0"
 
 [node name="EditorSpace" type="Control" parent="."]
 layout_mode = 1
@@ -56,29 +71,68 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_7ucks")
 
-[node name="CodeEdit" type="CodeEdit" parent="EditorSpace"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 238.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Panel" type="Panel" parent="EditorSpace"]
-layout_mode = 0
-offset_right = 236.0
-offset_bottom = 648.0
-
-[node name="FileTree" type="Tree" parent="EditorSpace/Panel"]
+[node name="SplitContainer" type="SplitContainer" parent="EditorSpace"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+split_offset = 32
+dragging_enabled = false
+dragger_visibility = 2
+vertical = true
+
+[node name="MenuBar" type="MenuBar" parent="EditorSpace/SplitContainer"]
+layout_mode = 2
+
+[node name="MenuButton" type="MenuButton" parent="EditorSpace/SplitContainer/MenuBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SplitContainer" type="SplitContainer" parent="EditorSpace/SplitContainer"]
+layout_mode = 2
+split_offset = 200
+dragger_visibility = 2
+
+[node name="Panel" type="Panel" parent="EditorSpace/SplitContainer/SplitContainer"]
+layout_mode = 2
+
+[node name="FileTree" type="Tree" parent="EditorSpace/SplitContainer/SplitContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SplitContainer" type="SplitContainer" parent="EditorSpace/SplitContainer/SplitContainer"]
+layout_mode = 2
+split_offset = 36
+dragging_enabled = false
+dragger_visibility = 2
+vertical = true
+
+[node name="FilesTab" type="ItemList" parent="EditorSpace/SplitContainer/SplitContainer/SplitContainer"]
+layout_mode = 2
+max_columns = 14
+
+[node name="CodeEdit" type="CodeEdit" parent="EditorSpace/SplitContainer/SplitContainer/SplitContainer"]
+layout_mode = 2
+theme_override_colors/background_color = Color(0, 0, 0, 1)
+syntax_highlighter = SubResource("CodeHighlighter_5qr7r")
+highlight_all_occurrences = true
+code_completion_enabled = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
 
 [connection signal="pressed" from="MainMenu/OpenFileButton" to="MainMenu" method="_on_open_file_button_pressed"]
 [connection signal="dir_selected" from="MainMenu/OpenFileDialog" to="MainMenu" method="_on_open_file_dialog_dir_selected"]
 [connection signal="file_selected" from="MainMenu/OpenFileDialog" to="MainMenu" method="_on_open_file_dialog_file_selected"]
-[connection signal="cell_selected" from="EditorSpace/Panel/FileTree" to="EditorSpace" method="_on_file_tree_cell_selected"]
+[connection signal="cell_selected" from="EditorSpace/SplitContainer/SplitContainer/Panel/FileTree" to="EditorSpace" method="_on_file_tree_cell_selected"]
+[connection signal="item_clicked" from="EditorSpace/SplitContainer/SplitContainer/SplitContainer/FilesTab" to="EditorSpace" method="_on_files_tab_item_clicked"]

@@ -10,7 +10,14 @@ config_version=5
 
 [application]
 
-config/name="grim-godot"
+config/name="Grim"
+config/version="0.1.0.0"
 run/main_scene="uid://b0qd8vsdufu8"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/show_image=false
+config/icon="uid://cc5pw1bhipqwl"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
